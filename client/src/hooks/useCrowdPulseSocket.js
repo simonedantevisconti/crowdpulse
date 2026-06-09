@@ -15,6 +15,8 @@ export const useCrowdPulseSocket = () => {
 
   const setSurgeInsights = useChatStore((state) => state.setSurgeInsights);
 
+  const setIdentityMatches = useChatStore((state) => state.setIdentityMatches);
+
   useEffect(() => {
     const socket = io(SOCKET_URL, {
       transports: ["websocket", "polling"],
@@ -50,6 +52,10 @@ export const useCrowdPulseSocket = () => {
       setSurgeInsights(insights);
     });
 
+    socket.on("identity:update", (matches) => {
+      setIdentityMatches(matches);
+    });
+
     socket.on("disconnect", () => {
       setConnection({
         isConnected: false,
@@ -75,5 +81,6 @@ export const useCrowdPulseSocket = () => {
     setMessages,
     setSentimentInsights,
     setSurgeInsights,
+    setIdentityMatches,
   ]);
 };

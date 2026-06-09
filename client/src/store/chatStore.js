@@ -30,6 +30,7 @@ export const useChatStore = create((set) => ({
   socketId: null,
   sentimentInsights: initialSentimentInsights,
   surgeInsights: initialSurgeInsights,
+  identityMatches: [],
 
   setConnection: ({ isConnected, socketId = null }) => {
     set({
@@ -72,11 +73,18 @@ export const useChatStore = create((set) => ({
     });
   },
 
+  setIdentityMatches: (identityMatches) => {
+    set({
+      identityMatches: Array.isArray(identityMatches) ? identityMatches : [],
+    });
+  },
+
   clearMessages: () => {
     set({
       messages: [],
       sentimentInsights: initialSentimentInsights,
       surgeInsights: initialSurgeInsights,
+      identityMatches: [],
     });
   },
 }));
