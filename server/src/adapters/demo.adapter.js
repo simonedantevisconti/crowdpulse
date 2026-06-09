@@ -37,6 +37,20 @@ const demoMessages = [
     displayName: "Stream Watcher",
     text: "The unified chat idea is actually amazing",
   },
+
+  // Stesso utente rilevato su piattaforme differenti.
+  {
+    platform: "twitch",
+    username: "marcoLive",
+    displayName: "Marco Live",
+    text: "I am also watching from Twitch",
+  },
+  {
+    platform: "x",
+    username: "marco.live",
+    displayName: "Marco Live",
+    text: "CrowdPulse recognized me across platforms",
+  },
 ];
 
 let messageIndex = 0;

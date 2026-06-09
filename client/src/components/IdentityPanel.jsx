@@ -27,6 +27,7 @@ const IdentityPanel = () => {
       {identityMatches.length === 0 ? (
         <div className="identity-panel__empty">
           <p>Nessuna identità condivisa rilevata.</p>
+
           <span>
             I match appariranno quando lo stesso utente verrà riconosciuto su
             piattaforme differenti.
@@ -39,6 +40,8 @@ const IdentityPanel = () => {
               ? identity.profiles
               : [];
 
+            const mainUser = profiles[0]?.user;
+
             return (
               <article
                 className="identity-panel__match"
@@ -46,33 +49,35 @@ const IdentityPanel = () => {
               >
                 <div className="identity-panel__match-header">
                   <strong>
-                    {identity.displayName ||
-                      identity.username ||
+                    {mainUser?.displayName ||
+                      mainUser?.username ||
                       "Utente condiviso"}
                   </strong>
 
-                  {typeof identity.confidence === "number" && (
-                    <span>{Math.round(identity.confidence * 100)}%</span>
-                  )}
+                  <span>{identity.platformCount} piattaforme</span>
                 </div>
 
                 <div className="identity-panel__platforms">
-                  {profiles.map((profile, index) => (
-                    <div
-                      className="identity-panel__profile"
-                      key={`${identity.identityId}-${profile.platform}-${index}`}
-                    >
-                      <span
-                        className={`identity-panel__platform identity-panel__platform--${profile.platform}`}
-                      >
-                        {getPlatformLabel(profile.platform)}
-                      </span>
+                  {profiles.map((profile, index) => {
+                    const profileUser = profile.user || {};
 
-                      <span className="identity-panel__username">
-                        @{profile.username}
-                      </span>
-                    </div>
-                  ))}
+                    return (
+                      <div
+                        className="identity-panel__profile"
+                        key={`${identity.identityId}-${profile.platform}-${index}`}
+                      >
+                        <span
+                          className={`identity-panel__platform identity-panel__platform--${profile.platform}`}
+                        >
+                          {getPlatformLabel(profile.platform)}
+                        </span>
+
+                        <span className="identity-panel__username">
+                          @{profileUser.username || "unknown"}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </article>
             );

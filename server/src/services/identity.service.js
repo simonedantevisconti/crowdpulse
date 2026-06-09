@@ -8,6 +8,20 @@ const normalizeIdentityValue = (value = "") => {
     .replace(/[^a-z0-9]/g, "");
 };
 
+const getUserKey = (user = {}) => {
+  if (user.id) {
+    return String(user.id);
+  }
+
+  const normalizedUsername = normalizeIdentityValue(user.username);
+
+  if (normalizedUsername) {
+    return normalizedUsername;
+  }
+
+  return normalizeIdentityValue(user.displayName);
+};
+
 const calculateSimilarity = (firstValue, secondValue) => {
   const first = normalizeIdentityValue(firstValue);
   const second = normalizeIdentityValue(secondValue);
@@ -69,15 +83,17 @@ export const compareUserIdentities = (firstUser, secondUser) => {
   };
 };
 
-const createIdentityId = (platform, userId) => {
-  return `identity-${platform}-${userId}`;
+const createIdentityId = (platform, userKey) => {
+  return `identity-${platform}-${userKey}`;
 };
 
 export const resolveIdentity = (message) => {
   const { platform, user } = message;
 
+  const userKey = getUserKey(user);
+
   const existingPlatformProfile = identityProfiles.find(
-    (profile) => profile.platform === platform && profile.user.id === user.id,
+    (profile) => profile.platform === platform && profile.userKey === userKey,
   );
 
   if (existingPlatformProfile) {
@@ -111,13 +127,14 @@ export const resolveIdentity = (message) => {
 
   const identityId = hasSuggestedMatch
     ? bestMatch.identityId
-    : createIdentityId(platform, user.id);
+    : createIdentityId(platform, userKey);
 
   identityProfiles.push({
     identityId,
     platform,
+    userKey,
     user: {
-      id: user.id,
+      id: user.id || null,
       username: user.username,
       displayName: user.displayName,
       avatarUrl: user.avatarUrl,
