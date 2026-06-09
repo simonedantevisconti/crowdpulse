@@ -1,0 +1,155 @@
+.chat-message {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 14px 14px 14px 17px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: rgba(23, 23, 27, 0.75);
+  overflow: hidden;
+}
+
+.chat-message:hover {
+  border-color: var(--border);
+  background: var(--panel-soft);
+}
+
+.chat-message__platform-line {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+}
+
+.chat-message--twitch .chat-message__platform-line {
+  background: var(--twitch);
+}
+
+.chat-message--kick .chat-message__platform-line {
+  background: var(--kick);
+}
+
+.chat-message--x .chat-message__platform-line {
+  background: var(--x);
+}
+
+.chat-message__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  object-fit: cover;
+  background: #222228;
+}
+
+.chat-message__content {
+  min-width: 0;
+}
+
+.chat-message__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.platform-badge {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.platform-badge--twitch {
+  background: rgba(145, 70, 255, 0.15);
+  color: #b98cff;
+}
+
+.platform-badge--kick {
+  background: rgba(83, 252, 24, 0.12);
+  color: var(--kick);
+}
+
+.platform-badge--x {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.chat-message__username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.chat-message__handle {
+  color: var(--muted);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-message__time {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.chat-message__text {
+  margin: 7px 0 0;
+  color: #dadae0;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.chat-message__attachments {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.chat-message__attachments img {
+  max-width: 240px;
+  max-height: 160px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.chat-message__footer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.sentiment-tag {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sentiment-tag--positive {
+  color: #53fc18;
+  background: rgba(83, 252, 24, 0.1);
+}
+
+.sentiment-tag--neutral {
+  color: #a3a3ad;
+  background: rgba(163, 163, 173, 0.1);
+}
+
+.sentiment-tag--negative {
+  color: #ff6464;
+  background: rgba(255, 100, 100, 0.1);
+}
+
+.sentiment-score {
+  color: var(--muted);
+  font-size: 10px;
+}

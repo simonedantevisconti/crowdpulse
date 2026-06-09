@@ -1,0 +1,29 @@
+@media (max-width: 1000px) {
+  .dashboard {
+    grid-template-columns: 210px 1fr;
+  }
+
+  .insights-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    padding: 14px;
+  }
+
+  .brand p,
+  .connection-status span:not(.connection-status__dot) {
+    display: none;
+  }
+
+  .dashboard {
+    height: calc(100vh - 73px);
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
