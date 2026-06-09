@@ -1,5 +1,6 @@
 import ChatFeed from "./components/ChatFeed";
 import ConnectionStatus from "./components/ConnectionStatus";
+import IdentityPanel from "./components/IdentityPanel";
 import SentimentPanel from "./components/SentimentPanel";
 import SurgePanel from "./components/SurgePanel";
 import { useCrowdPulseSocket } from "./hooks/useCrowdPulseSocket";
@@ -65,10 +66,7 @@ function App() {
 
           <SurgePanel />
 
-          <div className="insight-placeholder">
-            <span>Coming next</span>
-            <strong>Identity matches</strong>
-          </div>
+          <IdentityPanel />
         </aside>
       </main>
     </div>
