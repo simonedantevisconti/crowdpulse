@@ -14,11 +14,22 @@ const initialSentimentInsights = {
   mood: "neutral",
 };
 
+const initialSurgeInsights = {
+  isSurging: false,
+  intensity: 0,
+  recentMessages: 0,
+  currentRate: 0,
+  baselineRate: 0,
+  windowMs: 10000,
+  detectedAt: null,
+};
+
 export const useChatStore = create((set) => ({
   messages: [],
   isConnected: false,
   socketId: null,
   sentimentInsights: initialSentimentInsights,
+  surgeInsights: initialSurgeInsights,
 
   setConnection: ({ isConnected, socketId = null }) => {
     set({
@@ -55,10 +66,17 @@ export const useChatStore = create((set) => ({
     });
   },
 
+  setSurgeInsights: (surgeInsights) => {
+    set({
+      surgeInsights,
+    });
+  },
+
   clearMessages: () => {
     set({
       messages: [],
       sentimentInsights: initialSentimentInsights,
+      surgeInsights: initialSurgeInsights,
     });
   },
 }));

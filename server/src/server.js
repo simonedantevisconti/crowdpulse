@@ -3,12 +3,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+
 import { startDemoAdapter } from "./adapters/demo.adapter.js";
+
 import {
-  getRecentMessages,
   processMessage,
   storeMessage,
+  getRecentMessages,
+  getLatestSurgeInsights,
 } from "./services/chat.service.js";
+
 import { calculateSentimentInsights } from "./services/insights.service.js";
 
 dotenv.config();
@@ -58,10 +62,17 @@ io.on("connection", (socket) => {
   });
 
   socket.emit("chat:history", getRecentMessages());
+
   socket.emit(
     "sentiment:update",
     calculateSentimentInsights(getRecentMessages()),
   );
+
+  const surgeInsights = getLatestSurgeInsights();
+
+  if (surgeInsights) {
+    socket.emit("surge:update", surgeInsights);
+  }
 
   socket.on("disconnect", (reason) => {
     console.log(`Socket disconnesso: ${socket.id} — ${reason}`);
@@ -74,9 +85,15 @@ const publishMessage = (message) => {
 
   io.emit("chat:message", storedMessage);
 
-  const insights = calculateSentimentInsights(getRecentMessages());
+  const sentimentInsights = calculateSentimentInsights(getRecentMessages());
 
-  io.emit("sentiment:update", insights);
+  io.emit("sentiment:update", sentimentInsights);
+
+  const surgeInsights = getLatestSurgeInsights();
+
+  if (surgeInsights) {
+    io.emit("surge:update", surgeInsights);
+  }
 
   console.log(
     `[${storedMessage.platform.toUpperCase()}]`,
