@@ -140,3 +140,28 @@ export const getIdentityProfiles = () => {
 export const resetIdentityProfiles = () => {
   identityProfiles.length = 0;
 };
+
+export const getIdentityMatches = () => {
+  const groupedIdentities = new Map();
+
+  identityProfiles.forEach((profile) => {
+    const existingIdentity = groupedIdentities.get(profile.identityId) || {
+      identityId: profile.identityId,
+      profiles: [],
+    };
+
+    existingIdentity.profiles.push({
+      platform: profile.platform,
+      user: profile.user,
+    });
+
+    groupedIdentities.set(profile.identityId, existingIdentity);
+  });
+
+  return [...groupedIdentities.values()]
+    .filter((identity) => identity.profiles.length > 1)
+    .map((identity) => ({
+      ...identity,
+      platformCount: identity.profiles.length,
+    }));
+};

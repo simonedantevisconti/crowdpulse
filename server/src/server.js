@@ -14,6 +14,7 @@ import {
 } from "./services/chat.service.js";
 
 import { calculateSentimentInsights } from "./services/insights.service.js";
+import { getIdentityMatches } from "./services/identity.service.js";
 
 dotenv.config();
 
@@ -74,6 +75,8 @@ io.on("connection", (socket) => {
     socket.emit("surge:update", surgeInsights);
   }
 
+  socket.emit("identity:update", getIdentityMatches());
+
   socket.on("disconnect", (reason) => {
     console.log(`Socket disconnesso: ${socket.id} — ${reason}`);
   });
@@ -94,6 +97,8 @@ const publishMessage = (message) => {
   if (surgeInsights) {
     io.emit("surge:update", surgeInsights);
   }
+
+  io.emit("identity:update", getIdentityMatches());
 
   console.log(
     `[${storedMessage.platform.toUpperCase()}]`,
