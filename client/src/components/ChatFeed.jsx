@@ -4,9 +4,15 @@ import ChatMessage from "./ChatMessage";
 
 const ChatFeed = () => {
   const messages = useChatStore((state) => state.messages);
+  const activePlatforms = useChatStore((state) => state.activePlatforms);
+
   const feedEndRef = useRef(null);
 
   const [isPaused, setIsPaused] = useState(true);
+
+  const filteredMessages = messages.filter(
+    (message) => activePlatforms[message.platform],
+  );
 
   useEffect(() => {
     if (!isPaused) {
@@ -15,7 +21,7 @@ const ChatFeed = () => {
         block: "end",
       });
     }
-  }, [messages, isPaused]);
+  }, [filteredMessages.length, isPaused]);
 
   return (
     <section className="chat-panel">
@@ -26,7 +32,9 @@ const ChatFeed = () => {
         </div>
 
         <div className="chat-panel__actions">
-          <span className="message-counter">{messages.length} messages</span>
+          <span className="message-counter">
+            {filteredMessages.length} messages
+          </span>
 
           <button
             type="button"
@@ -39,13 +47,18 @@ const ChatFeed = () => {
       </div>
 
       <div className="chat-feed">
-        {messages.length === 0 ? (
+        {filteredMessages.length === 0 ? (
           <div className="empty-feed">
             <span className="empty-feed__pulse" />
-            <p>Waiting for the first message…</p>
+
+            <p>
+              {messages.length === 0
+                ? "Waiting for the first message…"
+                : "No messages from the selected platforms."}
+            </p>
           </div>
         ) : (
-          messages.map((message) => (
+          filteredMessages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))
         )}

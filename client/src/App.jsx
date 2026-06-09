@@ -4,9 +4,18 @@ import IdentityPanel from "./components/IdentityPanel";
 import SentimentPanel from "./components/SentimentPanel";
 import SurgePanel from "./components/SurgePanel";
 import { useCrowdPulseSocket } from "./hooks/useCrowdPulseSocket";
+import { useChatStore } from "./store/chatStore";
 
 function App() {
   useCrowdPulseSocket();
+
+  const activePlatforms = useChatStore((state) => state.activePlatforms);
+  const togglePlatform = useChatStore((state) => state.togglePlatform);
+  const resetPlatformFilters = useChatStore(
+    (state) => state.resetPlatformFilters,
+  );
+
+  const areAllPlatformsActive = Object.values(activePlatforms).every(Boolean);
 
   return (
     <div className="app-shell">
@@ -28,24 +37,54 @@ function App() {
           <span className="eyebrow">Sources</span>
 
           <div className="source-list">
-            <div className="source-item source-item--twitch">
+            <button
+              type="button"
+              className={`source-item source-item--twitch ${
+                !activePlatforms.twitch ? "source-item--inactive" : ""
+              }`}
+              aria-pressed={activePlatforms.twitch}
+              onClick={() => togglePlatform("twitch")}
+            >
               <span className="source-item__dot" />
               <span>Twitch</span>
-              <strong>Live</strong>
-            </div>
+              <strong>{activePlatforms.twitch ? "Live" : "Hidden"}</strong>
+            </button>
 
-            <div className="source-item source-item--kick">
+            <button
+              type="button"
+              className={`source-item source-item--kick ${
+                !activePlatforms.kick ? "source-item--inactive" : ""
+              }`}
+              aria-pressed={activePlatforms.kick}
+              onClick={() => togglePlatform("kick")}
+            >
               <span className="source-item__dot" />
               <span>Kick</span>
-              <strong>Live</strong>
-            </div>
+              <strong>{activePlatforms.kick ? "Live" : "Hidden"}</strong>
+            </button>
 
-            <div className="source-item source-item--x">
+            <button
+              type="button"
+              className={`source-item source-item--x ${
+                !activePlatforms.x ? "source-item--inactive" : ""
+              }`}
+              aria-pressed={activePlatforms.x}
+              onClick={() => togglePlatform("x")}
+            >
               <span className="source-item__dot" />
               <span>X</span>
-              <strong>Live</strong>
-            </div>
+              <strong>{activePlatforms.x ? "Live" : "Hidden"}</strong>
+            </button>
           </div>
+
+          <button
+            type="button"
+            className="source-reset-button"
+            onClick={resetPlatformFilters}
+            disabled={areAllPlatformsActive}
+          >
+            Show all platforms
+          </button>
 
           <div className="sidebar-card">
             <span className="eyebrow">Demo adapter</span>

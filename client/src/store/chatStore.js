@@ -24,6 +24,12 @@ const initialSurgeInsights = {
   detectedAt: null,
 };
 
+const initialActivePlatforms = {
+  twitch: true,
+  kick: true,
+  x: true,
+};
+
 export const useChatStore = create((set) => ({
   messages: [],
   isConnected: false,
@@ -31,6 +37,7 @@ export const useChatStore = create((set) => ({
   sentimentInsights: initialSentimentInsights,
   surgeInsights: initialSurgeInsights,
   identityMatches: [],
+  activePlatforms: initialActivePlatforms,
 
   setConnection: ({ isConnected, socketId = null }) => {
     set({
@@ -76,6 +83,29 @@ export const useChatStore = create((set) => ({
   setIdentityMatches: (identityMatches) => {
     set({
       identityMatches: Array.isArray(identityMatches) ? identityMatches : [],
+    });
+  },
+
+  togglePlatform: (platform) => {
+    set((state) => {
+      if (!(platform in state.activePlatforms)) {
+        return state;
+      }
+
+      return {
+        activePlatforms: {
+          ...state.activePlatforms,
+          [platform]: !state.activePlatforms[platform],
+        },
+      };
+    });
+  },
+
+  resetPlatformFilters: () => {
+    set({
+      activePlatforms: {
+        ...initialActivePlatforms,
+      },
     });
   },
 
